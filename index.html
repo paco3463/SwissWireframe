@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Swiss Farms — Clickable Wireframe</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
+:root{
+  --ink:#050708; --ink-soft:#1c1d1e; --red:#e62c28; --red-deep:#a91f1b;
+  --brass:#b9922f; --brass-soft:#d9bd7c; --paper:#fff; --paper-alt:#f5f5f4;
+  --stone:#4a453e; --stone-light:#9a9186; --line:#e4e4e2;
+  --fh:'Manrope',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  --fb:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  --wrap:1200px; --hh:70px;
+}
+*,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+html{ scroll-behavior:smooth; }
+body{ font-family:var(--fb); color:var(--ink); background:var(--paper); line-height:1.6; -webkit-font-smoothing:antialiased; }
+a{ color:inherit; text-decoration:none; }
+img{ max-width:100%; display:block; }
+.wrap{ max-width:var(--wrap); margin:0 auto; padding:0 28px; }
+h1,h2,h3,h4{ font-family:var(--fh); letter-spacing:-.02em; line-height:1.12; }
+.eyebrow{ display:inline-flex; align-items:center; gap:12px; font-family:var(--fh); font-weight:600; font-size:.7rem; letter-spacing:.22em; text-transform:uppercase; color:var(--red-deep); margin-bottom:14px; }
+.eyebrow::before{ content:''; width:24px; height:1px; background:currentColor; opacity:.6; }
+.eyebrow.on-dark{ color:var(--brass-soft); }
+.lead{ color:var(--stone); font-size:1.05rem; max-width:600px; }
+.section{ padding:84px 0; }
+.section.alt{ background:var(--paper-alt); }
+.section.dark{ background:var(--ink); color:var(--paper); }
+.section.dark .lead{ color:rgba(255,255,255,.66); }
+.sec-head{ max-width:640px; margin-bottom:42px; }
+.sec-head.center{ margin-left:auto; margin-right:auto; text-align:center; }
+.sec-head h2{ font-size:clamp(1.7rem,3vw,2.5rem); font-weight:700; margin-bottom:14px; }
+/* buttons */
+.btn{ display:inline-flex; align-items:center; gap:9px; font-family:var(--fh); font-weight:700; font-size:.74rem; letter-spacing:.14em; text-transform:uppercase; padding:14px 28px; border-radius:4px; cursor:pointer; transition:.25s; border:1px solid transparent; }
+.btn-primary{ background:var(--red); color:#fff; }
+.btn-primary:hover{ background:var(--red-deep); }
+.btn-ghost{ background:transparent; color:inherit; border-color:currentColor; opacity:.9; }
+.btn-ghost:hover{ opacity:1; }
+.btn-row{ display:flex; gap:14px; flex-wrap:wrap; margin-top:26px; }
+/* placeholder box (wireframe X) */
+.ph{ position:relative; background:var(--paper-alt); border:1px solid var(--line); border-radius:10px; overflow:hidden;
+  background-image:
+    linear-gradient(to top right, transparent calc(50% - .8px), var(--line) 50%, transparent calc(50% + .8px)),
+    linear-gradient(to top left,  transparent calc(50% - .8px), var(--line) 50%, transparent calc(50% + .8px)); }
+.ph span{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); background:var(--paper); border:1px solid var(--line); border-radius:999px; font-family:var(--fh); font-weight:600; font-size:.6rem; letter-spacing:.14em; text-transform:uppercase; color:var(--stone-light); padding:5px 12px; }
+/* grids/cards */
+.grid{ display:grid; gap:22px; }
+.g-2{ grid-template-columns:repeat(2,1fr); } .g-3{ grid-template-columns:repeat(3,1fr); } .g-4{ grid-template-columns:repeat(4,1fr); }
+.card{ background:var(--paper); border:1px solid var(--line); border-radius:12px; overflow:hidden; display:flex; flex-direction:column; }
+.card .ph{ border:0; border-radius:0; border-bottom:1px solid var(--line); }
+.card__b{ padding:22px 22px 26px; }
+.card__b h3{ font-size:1.15rem; font-weight:700; margin-bottom:8px; }
+.card__b p{ color:var(--stone); font-size:.92rem; }
+.card__b .btn-text{ display:inline-flex; align-items:center; gap:7px; margin-top:16px; font-family:var(--fh); font-weight:700; font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:var(--red-deep); }
+.split{ display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center; }
+.pill{ display:inline-block; font-family:var(--fh); font-weight:600; font-size:.7rem; letter-spacing:.06em; border:1px solid var(--line); border-radius:999px; padding:7px 14px; margin:0 8px 8px 0; color:var(--stone); }
+.pill.red{ background:var(--red); color:#fff; border-color:var(--red); }
+.pill.brass{ background:var(--brass-soft); border-color:var(--brass-soft); color:var(--ink); }
+.stats{ display:flex; flex-wrap:wrap; gap:0; border-top:1px solid var(--line); margin-top:36px; }
+.stat{ flex:1; min-width:150px; padding:22px 20px 0 0; border-right:1px solid var(--line); }
+.stat:last-child{ border-right:0; }
+.stat b{ display:block; font-family:var(--fh); font-weight:800; font-size:1.9rem; }
+.stat span{ font-size:.7rem; text-transform:uppercase; letter-spacing:.1em; color:var(--stone-light); }
+/* page hero (dark) */
+.phero{ background:var(--ink); color:var(--paper); padding:130px 0 80px; }
+.phero h1{ font-size:clamp(2.3rem,5vw,3.6rem); font-weight:800; margin:16px 0 16px; }
+.phero .lead{ color:rgba(255,255,255,.7); }
+/* HOME HERO (dark, original) */
+.hhero{ background:var(--ink); color:var(--paper); padding:130px 0 90px; }
+.hhero h1{ font-size:clamp(2.5rem,6vw,4.6rem); font-weight:800; text-transform:uppercase; margin:18px 0 20px; }
+.hhero h1 em{ font-style:normal; color:var(--brass-soft); }
+.hhero .lead{ color:rgba(255,255,255,.72); font-size:1.15rem; }
+/* SPLASH COVER — intro gate; press Drive In! to enter the site */
+body.pre-enter{ overflow:hidden; }
+.wf-cover{ position:fixed; inset:0; z-index:200; display:flex; align-items:center; justify-content:center; text-align:center; overflow:hidden; background:linear-gradient(158deg,#e62c28 0%,#c9241f 42%,#a91f1b 72%,#7d1611 100%); transition:opacity .55s ease, transform .7s cubic-bezier(.7,0,.2,1), visibility .7s; }
+.wf-cover.gone{ opacity:0; transform:translateY(-100%); visibility:hidden; pointer-events:none; }
+.wf-cover::before{ content:''; position:absolute; inset:0; pointer-events:none; background:radial-gradient(120% 90% at 20% 12%, rgba(255,255,255,.10), transparent 55%), radial-gradient(140% 120% at 50% 120%, rgba(0,0,0,.35), transparent 60%); }
+.cover__logo{ position:absolute; top:50%; left:50%; width:clamp(620px,128%,1700px); height:auto; opacity:.09; pointer-events:none; filter:brightness(0) invert(1); animation:cFloat 9s ease-in-out infinite; }
+@keyframes cFloat{ 0%,100%{ transform:translate(-50%,-51%); } 50%{ transform:translate(-50%,-49%); } }
+.cover__inner{ position:relative; z-index:2; padding:100px 24px; }
+.cover__eyebrow{ display:inline-block; font-family:var(--fh); font-weight:600; font-size:.72rem; letter-spacing:.28em; text-transform:uppercase; color:rgba(255,255,255,.85); margin-bottom:34px; }
+.cover__btn{ display:inline-flex; align-items:center; gap:13px; font-family:var(--fh); font-weight:800; font-size:1rem; letter-spacing:.12em; text-transform:uppercase; color:var(--red-deep); background:#fff; border:0; padding:21px 48px; border-radius:6px; box-shadow:0 24px 55px -20px rgba(0,0,0,.55); cursor:pointer; transition:transform .3s cubic-bezier(.2,.7,.3,1), box-shadow .3s ease; }
+.cover__btn svg{ width:20px; height:20px; transition:transform .3s ease; }
+.cover__btn:hover{ transform:translateY(-3px); box-shadow:0 32px 70px -20px rgba(0,0,0,.65); }
+.cover__btn:hover svg{ transform:translateX(4px); }
+/* value strip */
+.vstrip{ background:var(--ink-soft); }
+.vstrip .wrap{ display:flex; flex-wrap:wrap; }
+.vstrip div{ flex:1; min-width:180px; text-align:center; padding:24px 16px; border-right:1px solid rgba(255,255,255,.08); color:#fff; }
+.vstrip div:last-child{ border-right:0; }
+.vstrip b{ display:block; font-family:var(--fh); font-weight:800; font-size:1.05rem; }
+.vstrip span{ font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:var(--brass-soft); }
+/* timeline */
+.tl{ border-left:2px solid var(--line); margin-top:30px; }
+.tl li{ list-style:none; position:relative; padding:0 0 30px 28px; }
+.tl li::before{ content:''; position:absolute; left:-7px; top:4px; width:12px; height:12px; border-radius:50%; background:var(--red); }
+.tl b{ font-family:var(--fh); font-weight:800; }
+.tl p{ color:var(--stone); font-size:.94rem; }
+/* locator */
+.loc-row{ display:flex; gap:18px; align-items:flex-start; padding:20px 0; border-bottom:1px solid var(--line); }
+.loc-row b{ font-family:var(--fh); font-size:1.02rem; }
+.loc-row .addr{ color:var(--stone); font-size:.9rem; }
+.loc-row .hrs{ color:var(--stone-light); font-size:.82rem; margin-top:4px; }
+.loc-row .btn-text{ margin-left:auto; font-family:var(--fh); font-weight:700; font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:var(--red-deep); white-space:nowrap; }
+.loc-map{ aspect-ratio:4/5; position:sticky; top:90px; }
+.searchbar{ display:flex; gap:10px; margin-bottom:26px; }
+.searchbar .fld{ flex:1; border:1px solid var(--line); border-radius:6px; padding:14px 16px; color:var(--stone-light); font-family:var(--fb); }
+/* form wireframe */
+.formw{ background:var(--paper); border:1px solid var(--line); border-radius:14px; padding:34px; max-width:640px; }
+.formw label{ display:block; font-family:var(--fh); font-weight:600; font-size:.66rem; letter-spacing:.14em; text-transform:uppercase; color:var(--stone-light); margin:0 0 8px; }
+.formw .fld{ width:100%; border:0; border-bottom:1px solid var(--line); padding:10px 0; margin-bottom:22px; color:var(--stone-light); }
+/* ===== HEADER — transparent site-wide, white bar on scroll ===== */
+.wf-header{ position:fixed; top:0; left:0; right:0; z-index:100; height:var(--hh); background:transparent; border-bottom:1px solid transparent; transition:background .4s ease, box-shadow .4s ease, border-color .4s ease; }
+.wf-header.scrolled{ background:rgba(255,255,255,.92); backdrop-filter:blur(12px); border-bottom-color:var(--line); box-shadow:0 10px 30px -22px rgba(5,7,8,.4); }
+.wf-header__in{ max-width:var(--wrap); margin:0 auto; padding:0 28px; height:100%; display:flex; align-items:center; gap:20px; }
+.wf-logo{ display:flex; align-items:center; gap:10px; font-family:var(--fh); font-weight:800; font-size:1rem; letter-spacing:.14em; text-transform:uppercase; color:#fff; transition:color .4s ease; }
+.wf-header.scrolled .wf-logo{ color:var(--ink); }
+.wf-logo__mark{ width:16px; height:16px; background:var(--red); transform:rotate(45deg); border-radius:2px; flex-shrink:0; }
+.wf-nav{ display:flex; align-items:center; gap:26px; margin-left:24px; }
+.wf-nav a{ font-family:var(--fh); font-weight:600; font-size:.74rem; letter-spacing:.08em; text-transform:uppercase; color:rgba(255,255,255,.82); padding:6px 0; position:relative; white-space:nowrap; transition:color .3s ease; }
+.wf-nav a:hover, .wf-nav a.active{ color:#fff; }
+.wf-header.scrolled .wf-nav a{ color:var(--stone); }
+.wf-header.scrolled .wf-nav a:hover, .wf-header.scrolled .wf-nav a.active{ color:var(--ink); }
+.wf-nav a.active::after{ content:''; position:absolute; left:0; bottom:-2px; width:100%; height:2px; background:var(--red); }
+.wf-drop{ position:relative; }
+.wf-drop__menu{ position:absolute; top:calc(100% + 12px); left:0; background:#fff; border:1px solid var(--line); border-radius:10px; box-shadow:0 20px 50px -20px rgba(5,7,8,.25); padding:8px; min-width:210px; opacity:0; visibility:hidden; transform:translateY(-6px); transition:.22s; }
+.wf-drop:hover .wf-drop__menu{ opacity:1; visibility:visible; transform:none; }
+.wf-drop__menu a{ display:block; padding:10px 14px; border-radius:6px; text-transform:none; letter-spacing:0; font-size:.86rem; color:var(--stone) !important; }
+.wf-drop__menu a:hover{ background:var(--paper-alt); color:var(--ink) !important; }
+.wf-cta{ margin-left:auto; background:transparent; color:#fff; border:1px solid rgba(255,255,255,.6); }
+.wf-cta:hover{ background:#fff; color:var(--red-deep); border-color:#fff; }
+.wf-header.scrolled .wf-cta{ background:var(--red); color:#fff; border-color:var(--red); }
+.wf-header.scrolled .wf-cta:hover{ background:var(--red-deep); border-color:var(--red-deep); }
+.wf-burger{ display:none; margin-left:auto; background:none; border:0; font-size:1.6rem; line-height:1; cursor:pointer; color:#fff; transition:color .4s ease; }
+.wf-header.scrolled .wf-burger{ color:var(--ink); }
+body.wf-menu-open .wf-burger{ color:#fff; }
+.wf-mobile{ display:none; position:fixed; inset:0; z-index:99; background:var(--ink); padding:calc(var(--hh) + 22px) 28px 40px; overflow-y:auto; }
+.wf-mobile a{ display:block; font-family:var(--fh); font-weight:700; font-size:1.25rem; padding:15px 0; border-bottom:1px solid rgba(255,255,255,.12); text-transform:uppercase; letter-spacing:.04em; color:#fff; }
+.wf-mobile a.sub{ padding-left:18px; font-size:1rem; color:rgba(255,255,255,.6); text-transform:none; }
+body.wf-menu-open{ overflow:hidden; }
+body.wf-menu-open .wf-mobile{ display:block; }
+/* pages */
+.wf-page{ display:none; }
+.wf-page.is-active{ display:block; animation:fade .4s ease; }
+@keyframes fade{ from{ opacity:0; transform:translateY(8px); } to{ opacity:1; transform:none; } }
+/* footer */
+.wf-foot{ background:var(--ink); color:rgba(255,255,255,.6); padding:70px 0 30px; }
+.wf-foot__grid{ display:grid; grid-template-columns:1.5fr 1fr 1fr 1fr; gap:40px; }
+.wf-foot h5{ font-family:var(--fh); font-weight:700; font-size:.68rem; letter-spacing:.18em; text-transform:uppercase; color:var(--brass-soft); margin-bottom:16px; }
+.wf-foot a{ display:block; color:rgba(255,255,255,.6); font-size:.9rem; padding:5px 0; }
+.wf-foot a:hover{ color:#fff; }
+.wf-foot__bar{ border-top:1px solid rgba(255,255,255,.12); margin-top:44px; padding-top:22px; font-size:.78rem; display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+/* ===== responsive ===== */
+@media (max-width:940px){
+  .wf-nav, .wf-cta{ display:none; } .wf-burger{ display:block; }
+  .split{ grid-template-columns:1fr; gap:30px; } .g-4{ grid-template-columns:repeat(2,1fr); } .g-3{ grid-template-columns:repeat(2,1fr); }
+  .wf-foot__grid{ grid-template-columns:1fr 1fr; }
+  .searchbar{ flex-direction:column; }
+  .loc-map{ position:static; aspect-ratio:16/10; margin-bottom:22px; }
+  .loc-row{ flex-wrap:wrap; } .loc-row .btn-text{ margin-left:0; width:100%; }
+}
+@media (max-width:640px){
+  .wrap{ padding:0 20px; }
+  .section{ padding:56px 0; }
+  .phero{ padding:104px 0 52px; }
+  .sec-head{ margin-bottom:32px; }
+  .g-2,.g-3,.g-4{ grid-template-columns:1fr; }
+  .hhero{ padding:104px 0 60px; }
+  .vstrip div{ border-right:0; border-bottom:1px solid rgba(255,255,255,.08); }
+  .wf-foot__grid{ grid-template-columns:1fr; gap:30px; }
+  .formw{ padding:26px 22px; }
+  .stat{ min-width:120px; }
+  .cover__inner{ padding:90px 20px; }
+  .cover__logo{ width:158%; }
+  .cover__btn{ font-size:.9rem; padding:18px 38px; }
+  .cover__eyebrow{ font-size:.66rem; letter-spacing:.2em; }
+}
+@media (prefers-reduced-motion:reduce){ .cover__logo{ animation:none; } html{ scroll-behavior:auto; } }
+</style>
+</head>
+<body class="pre-enter">
+
+<!-- ================= SPLASH COVER (intro gate) ================= -->
+<div class="wf-cover" id="wf-cover">
+  <img class="cover__logo" src="https://swissfarmstores.com/wp-content/uploads/2026/07/WHIT-ELOGO-MAIN_.png" alt="">
+  <div class="cover__inner">
+    <span class="cover__eyebrow">Delco's Drive-Thru Market &middot; Since 1968</span>
+    <div>
+      <button class="cover__btn" id="wf-enter">
+        Drive In!
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= HEADER ================= -->
+<header class="wf-header" id="wf-header">
+  <div class="wf-header__in">
+    <a class="wf-logo" href="#home"><span class="wf-logo__mark"></span> Swiss Farms</a>
+    <nav class="wf-nav">
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <div class="wf-drop">
+        <a href="#groceries">Groceries &amp; Products ▾</a>
+        <div class="wf-drop__menu">
+          <a href="#bakery">Bakery</a>
+          <a href="#delco-favorites">Delco Favorites</a>
+          <a href="#convenience">General Convenience</a>
+        </div>
+      </div>
+      <a href="#locator">Store Locator</a>
+      <a href="#careers">Careers</a>
+      <a href="#franchise">Franchise</a>
+      <a href="#news">News</a>
+    </nav>
+    <a class="wf-cta btn" href="#locator">Find a Store</a>
+    <button class="wf-burger" id="wf-burger" aria-label="Menu">&#9776;</button>
+  </div>
+</header>
+<div class="wf-mobile" id="wf-mobile">
+  <a href="#home">Home</a>
+  <a href="#about">About</a>
+  <a href="#groceries">Groceries &amp; Products</a>
+  <a href="#bakery" class="sub">— Bakery</a>
+  <a href="#delco-favorites" class="sub">— Delco Favorites</a>
+  <a href="#convenience" class="sub">— General Convenience</a>
+  <a href="#locator">Store Locator</a>
+  <a href="#careers">Careers</a>
+  <a href="#franchise">Franchise Opportunities</a>
+  <a href="#news">News &amp; Updates</a>
+</div>
+
+<main>
+
+<!-- ================= HOME ================= -->
+<section class="wf-page" id="home">
+  <div class="hhero">
+    <div class="wrap">
+      <span class="eyebrow on-dark">Since 1968 · Delco, PA</span>
+      <h1>The Drive-Thru<br>Market, <em>Reinvented</em></h1>
+      <p class="lead">Milk, hoagies, fresh-baked rolls, and everyday essentials — grabbed in 60 seconds, without ever leaving your car.</p>
+      <div class="btn-row">
+        <a href="#locator" class="btn btn-primary">Find Your Store</a>
+        <a href="#groceries" class="btn btn-ghost" style="color:#fff;">Explore Groceries</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="vstrip"><div class="wrap">
+    <div><b>Fresh Daily</b><span>Baked On-Site</span></div>
+    <div><b>60 Seconds</b><span>Drive-Thru Fast</span></div>
+    <div><b>10 Stores</b><span>Across Delco</span></div>
+    <div><b>Open Early</b><span>&amp; Late</span></div>
+  </div></div>
+
+  <section class="section" id="home-shop">
+    <div class="wrap">
+      <div class="sec-head center"><span class="eyebrow">Shop by Category</span><h2>Everything You Swing By For</h2><p class="lead" style="margin:0 auto;">Three aisles, one window. Tap a category to browse.</p></div>
+      <div class="grid g-3">
+        <a class="card" href="#bakery"><div class="ph" style="aspect-ratio:4/3"><span>Image</span></div><div class="card__b"><h3>Bakery</h3><p>Hoagie rolls, kaiser buns, donuts, and cakes baked fresh every morning.</p><span class="btn-text">Browse Bakery →</span></div></a>
+        <a class="card" href="#delco-favorites"><div class="ph" style="aspect-ratio:4/3"><span>Image</span></div><div class="card__b"><h3>Delco Favorites</h3><p>The regional staples this county grew up on — you know the ones.</p><span class="btn-text">Browse Favorites →</span></div></a>
+        <a class="card" href="#convenience"><div class="ph" style="aspect-ratio:4/3"><span>Image</span></div><div class="card__b"><h3>General Convenience</h3><p>Milk, eggs, coffee, snacks, and the household basics you forgot.</p><span class="btn-text">Browse Convenience →</span></div></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="wrap split">
+      <div><span class="eyebrow">Taste of Delco</span><h2 style="font-size:clamp(1.7rem,3vw,2.4rem);font-weight:700;margin-bottom:14px;">Local Flavor, On the Way Home</h2><p class="lead">From the Swiss Tea Cooler to a proper hoagie, our shelves are stocked with the things that actually taste like home. Seasonal drops keep it interesting.</p><div class="btn-row"><a href="#delco-favorites" class="btn btn-primary">See Delco Favorites</a></div></div>
+      <div class="ph" style="aspect-ratio:5/4"><span>Image</span></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap split">
+      <div class="ph" style="aspect-ratio:16/10"><span>Map</span></div>
+      <div><span class="eyebrow">Always Nearby</span><h2 style="font-size:clamp(1.7rem,3vw,2.4rem);font-weight:700;margin-bottom:14px;">Ten Neighborhood Stores</h2><p class="lead">There's a Swiss Farms around the corner in Sharon Hill, Folsom, Springfield, Broomall and beyond. Find your closest window.</p><div class="btn-row"><a href="#locator" class="btn btn-primary">Open Store Locator</a></div></div>
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="wrap">
+      <div class="sec-head center"><span class="eyebrow">Fresh off the Press</span><h2>News &amp; Updates</h2></div>
+      <div class="grid g-3">
+        <a class="card" href="#news"><div class="ph" style="aspect-ratio:16/9"><span>Image</span></div><div class="card__b"><span class="pill brass">Openings</span><h3 style="margin-top:12px;">New Store Coming to Havertown</h3><p>Our newest drive-thru is nearly ready — here's a first look inside.</p></div></a>
+        <a class="card" href="#news"><div class="ph" style="aspect-ratio:16/9"><span>Image</span></div><div class="card__b"><span class="pill">Menu</span><h3 style="margin-top:12px;">Summer Water Ice Is Back</h3><p>Cherry, lemon, and a rotating flavor of the week all season long.</p></div></a>
+        <a class="card" href="#news"><div class="ph" style="aspect-ratio:16/9"><span>Image</span></div><div class="card__b"><span class="pill">Community</span><h3 style="margin-top:12px;">Backing Delco Little League</h3><p>How Swiss Farms is showing up for local teams this year.</p></div></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section dark">
+    <div class="wrap split">
+      <div><span class="eyebrow on-dark">Grow With Us</span><h2 style="font-size:clamp(1.7rem,3vw,2.4rem);font-weight:700;margin-bottom:14px;">Join the Crew or Own a Store</h2><p class="lead">We're hiring across every location — and opening the door to franchise partners who want to bring the drive-thru to their own neighborhood.</p></div>
+      <div class="btn-row" style="align-self:center;"><a href="#careers" class="btn btn-primary">View Careers</a><a href="#franchise" class="btn btn-ghost" style="color:#fff;">Franchise Info</a></div>
+    </div>
+  </section>
+</section>
+
+<!-- ================= ABOUT ================= -->
+<section class="wf-page" id="about">
+  <div class="phero"><div class="wrap"><span class="eyebrow on-dark">Our Story</span><h1>A Delco Original Since 1968</h1><p class="lead">For over five decades, we've been the fastest friendly stop in the county — a drive-thru market built on convenience, quality, and knowing our neighbors by name.</p></div></div>
+  <section class="section">
+    <div class="wrap split">
+      <div><span class="eyebrow">How It Started</span><h2 style="font-size:clamp(1.6rem,3vw,2.3rem);font-weight:700;margin-bottom:14px;">Milk Without Leaving the Car</h2><p class="lead" style="margin-bottom:16px;">It began with a simple idea: what if you could grab the essentials without unbuckling the kids? That drive-thru dairy stand grew into a Delco institution.</p><p class="lead">Today we're refreshing the experience for a new generation — same speed, same warmth, sharper than ever.</p>
+        <div class="stats"><div class="stat"><b>1968</b><span>Founded</span></div><div class="stat"><b>10</b><span>Locations</span></div><div class="stat"><b>50+</b><span>Years Serving Delco</span></div></div>
+      </div>
+      <div class="ph" style="aspect-ratio:4/5"><span>Image</span></div>
+    </div>
+  </section>
+  <section class="section alt">
+    <div class="wrap">
+      <div class="sec-head"><span class="eyebrow">The Journey</span><h2>Five Decades, One Window</h2></div>
+      <ul class="tl">
+        <li><b>1968 — The First Stand</b><p>A single drive-thru dairy opens its window in Delaware County.</p></li>
+        <li><b>1980s — Growing the Menu</b><p>Hoagies, fresh bread, and grab-and-go essentials join the lineup.</p></li>
+        <li><b>2000s — A County Habit</b><p>Multiple neighborhood stores make Swiss Farms part of the daily routine.</p></li>
+        <li><b>Today — Reinvented</b><p>A refreshed brand, modern stores, and the same fast, friendly service.</p></li>
+      </ul>
+    </div>
+  </section>
+  <section class="section">
+    <div class="wrap">
+      <div class="sec-head center"><span class="eyebrow">What We Stand For</span><h2>Our Values</h2></div>
+      <div class="grid g-4">
+        <div class="card"><div class="card__b"><h3>Convenience</h3><p>Your time matters. We make the everyday effortless.</p></div></div>
+        <div class="card"><div class="card__b"><h3>Community</h3><p>We're your neighbors — and we act like it.</p></div></div>
+        <div class="card"><div class="card__b"><h3>Quality</h3><p>Fresh daily, never an afterthought.</p></div></div>
+        <div class="card"><div class="card__b"><h3>Heritage</h3><p>Proudly Delco, proudly since 1968.</p></div></div>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ================= GROCERIES HUB ================= -->
+<section class="wf-page" id="groceries">
+  <div class="phero"><div class="wrap"><span class="eyebrow on-dark">Shop</span><h1>Groceries &amp; Products</h1><p class="lead">Three departments, one quick stop. Fresh-baked, locally loved, and everyday essential.</p></div></div>
+  <section class="section">
+    <div class="wrap">
+      <div class="grid g-3">
+        <a class="card" href="#bakery"><div class="ph" style="aspect-ratio:3/2"><span>Image</span></div><div class="card__b"><h3>Bakery</h3><p>Rolls, buns, donuts, and cakes from our ovens each morning.</p><span class="btn-text">Enter Bakery →</span></div></a>
+        <a class="card" href="#delco-favorites"><div class="ph" style="aspect-ratio:3/2"><span>Image</span></div><div class="card__b"><h3>Delco Favorites</h3><p>Regional icons and hometown staples you can't get just anywhere.</p><span class="btn-text">Enter Favorites →</span></div></a>
+        <a class="card" href="#convenience"><div class="ph" style="aspect-ratio:3/2"><span>Image</span></div><div class="card__b"><h3>General Convenience</h3><p>Dairy, drinks, snacks, coffee, and household basics.</p><span class="btn-text">Enter Convenience →</span></div></a>
+      </div>
+    </div>
+  </section>
+  <section class="section alt"><div class="wrap"><div class="sec-head center"><span class="eyebrow">This Week</span><h2>Weekly Deals</h2><p class="lead" style="margin:0 auto;">Rotating specials across every department — refreshed each Monday.</p></div><div class="grid g-4"><div class="card"><div class="ph" style="aspect-ratio:1"><span>Image</span></div><div class="card__b"><h3 style="font-size:1rem;">Gallon Milk</h3><p>Everyday low price</p></div></div><div class="card"><div class="ph" style="aspect-ratio:1"><span>Image</span></div><div class="card__b"><h3 style="font-size:1rem;">Dozen Rolls</h3><p>Bakery bundle</p></div></div><div class="card"><div class="ph" style="aspect-ratio:1"><span>Image</span></div><div class="card__b"><h3 style="font-size:1rem;">Coffee + Donut</h3><p>Morning combo</p></div></div><div class="card"><div class="ph" style="aspect-ratio:1"><span>Image</span></div><div class="card__b"><h3 style="font-size:1rem;">Water Ice</h3><p>Seasonal flavor</p></div></div></div></div></section>
+</section>
+
+<!-- ============ BAKERY ============ -->
+<section class="wf-page" id="bakery">
+  <div class="phero"><div class="wrap"><span class="eyebrow on-dark">Groceries &amp; Products / Bakery</span><h1>The Bakery</h1><p class="lead">Baked on-site every morning. If it's on the shelf, it's fresh today.</p><div class="btn-row"><a href="#groceries" class="btn btn-ghost" style="color:#fff;">← Back to Groceries</a></div></div></div>
+  <section class="section"><div class="wrap"><div class="sec-head"><span class="eyebrow">Straight From the Oven</span><h2>Today's Bake</h2></div>
+    <div class="grid g-4">
+      <div class="card"><div class="ph" style="aspect-ratio:1"><span>Image</span></div><div class="card__b"><h3 style="font-size:1.05rem;">Hoagie Rolls</h3><p>Soft, seeded, and built for a proper Delco hoagie.</p></div></div>
+      <div class="card"><div class="ph" style="aspect-ratio:1"><span>Image</span></div><div class="card__b"><h3 style="font-size:1.05rem;">Kaiser &amp; Sandwich Buns</h3><p>Sturdy enough for whatever you pile on.</p></div></div>
+      <div class="card"><div class="ph" style="aspect-ratio:1"><span>Image</span></div><div class="card__b"><h3 style="font-size:1.05rem;">Donuts &amp; Pastries</h3><p>Glazed, filled, and gone by noon.</p></div></div>
+      <div class="card"><div class="ph" style="aspect-ratio:1"><span>Image</span></div><div class="card__b"><h3 style="font-size:1.05rem;">Cakes &amp; Cupcakes</h3><p>Grab-and-go or order ahead for the occasion.</p></div></div>
+      <div class="card"><div class="ph" style="aspect-ratio:1"><span>Image</span></div><div class="card__b"><h3 style="font-size:1.05rem;">Sliced Breads</h3><p>White, wheat, and rye — the daily loaf.</p></div></div>
+      <div class="card"><div class="ph" style="aspect-ratio:1"><span>Image</span></div><div class="card__b"><h3 style="font-size:1.05rem;">Soft Pretzels</h3><p>A Philly-area birthright. Salt optional.</p></div></div>
+      <div class="card"><div class="ph" style="aspect-ratio:1"><span>Image</span></div><div class="card__b"><h3 style="font-size:1.05rem;">Bagels</h3><p>By the each or the half-dozen.</p></div></div>
+      <div class="card"><div class="ph" style="aspect-ratio:1"><span>Image</span></div><div class="card__b"><h3 style="font-size:1.05rem;">Seasonal Specials</h3><p>Pumpkin, hot cross buns, and holiday drops.</p></div></div>
+    </div>
+    <div style="margin-top:26px;"><span class="pill">Order Cakes Ahead</span><span class="pill">Bulk Roll Trays</span><span class="pill">Nut-Free Options</span></div>
+  </div></section>
+</section>
+
+<!-- ============ DELCO FAVORITES ============ -->
+<section class="wf-page" id="delco-favorites">
+  <div class="phero"><div class="wrap"><span class="eyebrow on-dark">Groceries &amp; Products / Delco Favorites</span><h1>Delco Favorites</h1><p class="lead">The hometown stuff. If you grew up here, this aisle needs no introduction.</p><div class="btn-row"><a href="#groceries" class="btn btn-ghost" style="color:#fff;">← Back to Groceries</a></div></div></div>
+  <section class="section"><div class="wrap"><div class="sec-head"><span class="eyebrow">Hometown Icons</span><h2>Tastes Like Home</h2></div>
+    <div class="grid g-3">
+      <div class="card"><div class="ph" style="aspect-ratio:4/3"><span>Image</span></div><div class="card__b"><h3>The Swiss Tea Cooler</h3><p>Our signature iced tea &amp; lemonade — the one you can't get anywhere else.</p></div></div>
+      <div class="card"><div class="ph" style="aspect-ratio:4/3"><span>Image</span></div><div class="card__b"><h3>Fresh Hoagies</h3><p>Built on our own rolls. Italian, turkey, veggie — your call.</p></div></div>
+      <div class="card"><div class="ph" style="aspect-ratio:4/3"><span>Image</span></div><div class="card__b"><h3>Water Ice</h3><p>Cherry, lemon, and a weekly rotating flavor all summer.</p></div></div>
+      <div class="card"><div class="ph" style="aspect-ratio:4/3"><span>Image</span></div><div class="card__b"><h3>Scrapple &amp; Pork Roll</h3><p>Breakfast, the Delaware Valley way.</p></div></div>
+      <div class="card"><div class="ph" style="aspect-ratio:4/3"><span>Image</span></div><div class="card__b"><h3>Local Dairy</h3><p>Milk and eggs from farms just up the road.</p></div></div>
+      <div class="card"><div class="ph" style="aspect-ratio:4/3"><span>Image</span></div><div class="card__b"><h3>Tastykake &amp; Snacks</h3><p>The regional lunchbox legends, always in stock.</p></div></div>
+    </div>
+  </div></section>
+</section>
+
+<!-- ============ CONVENIENCE ============ -->
+<section class="wf-page" id="convenience">
+  <div class="phero"><div class="wrap"><span class="eyebrow on-dark">Groceries &amp; Products / General Convenience</span><h1>Everyday Convenience</h1><p class="lead">The forgot-something aisle. In and out before the light turns green.</p><div class="btn-row"><a href="#groceries" class="btn btn-ghost" style="color:#fff;">← Back to Groceries</a></div></div></div>
+  <section class="section"><div class="wrap"><div class="sec-head"><span class="eyebrow">Stock Up Fast</span><h2>Essentials on the Go</h2></div>
+    <div class="grid g-4">
+      <div class="card"><div class="ph" style="aspect-ratio:1"><span>Image</span></div><div class="card__b"><h3 style="font-size:1.05rem;">Milk, Eggs &amp; Dairy</h3><p>The daily staples, always cold.</p></div></div>
+      <div class="card"><div class="ph" style="aspect-ratio:1"><span>Image</span></div><div class="card__b"><h3 style="font-size:1.05rem;">Coffee &amp; Hot Drinks</h3><p>Fresh-brewed, poured to go.</p></div></div>
+      <div class="card"><div class="ph" style="aspect-ratio:1"><span>Image</span></div><div class="card__b"><h3 style="font-size:1.05rem;">Cold Drinks</h3><p>Soda, water, energy, and sports drinks.</p></div></div>
+      <div class="card"><div class="ph" style="aspect-ratio:1"><span>Image</span></div><div class="card__b"><h3 style="font-size:1.05rem;">Snacks &amp; Candy</h3><p>Chips, jerky, and the checkout classics.</p></div></div>
+      <div class="card"><div class="ph" style="aspect-ratio:1"><span>Image</span></div><div class="card__b"><h3 style="font-size:1.05rem;">Household Basics</h3><p>Paper towels, detergent, the just-ran-outs.</p></div></div>
+      <div class="card"><div class="ph" style="aspect-ratio:1"><span>Image</span></div><div class="card__b"><h3 style="font-size:1.05rem;">Grab-&amp;-Go Meals</h3><p>Sandwiches and snacks ready when you are.</p></div></div>
+      <div class="card"><div class="ph" style="aspect-ratio:1"><span>Image</span></div><div class="card__b"><h3 style="font-size:1.05rem;">Ice &amp; Frozen</h3><p>Bagged ice and freezer favorites.</p></div></div>
+      <div class="card"><div class="ph" style="aspect-ratio:1"><span>Image</span></div><div class="card__b"><h3 style="font-size:1.05rem;">Lottery &amp; ATM</h3><p>Quick services at every window.</p></div></div>
+    </div>
+  </div></section>
+</section>
+
+<!-- ================= STORE LOCATOR ================= -->
+<section class="wf-page" id="locator">
+  <div class="phero"><div class="wrap"><span class="eyebrow on-dark">Find Us</span><h1>Store Locator</h1><p class="lead">Ten drive-thru markets across Delaware County. Find your closest window.</p></div></div>
+  <section class="section"><div class="wrap">
+    <div class="searchbar"><div class="fld">Enter ZIP or town…</div><a class="btn btn-primary" href="#locator">Search</a></div>
+    <div class="split" style="align-items:start;">
+      <div class="ph loc-map"><span>Map</span></div>
+      <div>
+        <div class="loc-row"><div><b>Sharon Hill</b><div class="addr">1445 Chester Pike, Sharon Hill, PA 19079</div><div class="hrs">Mon–Sun · 6a–11p</div></div><span class="btn-text">Directions →</span></div>
+        <div class="loc-row"><div><b>Folsom</b><div class="addr">115 Kedron Ave, Folsom, PA 19033</div><div class="hrs">Mon–Sun · 6a–11p</div></div><span class="btn-text">Directions →</span></div>
+        <div class="loc-row"><div><b>Springfield</b><div class="addr">600 Baltimore Pike, Springfield, PA 19064</div><div class="hrs">Mon–Sun · 6a–11p</div></div><span class="btn-text">Directions →</span></div>
+        <div class="loc-row"><div><b>Swarthmore</b><div class="addr">730 S Chester Road, Swarthmore, PA 19081</div><div class="hrs">Mon–Sun · 6a–11p</div></div><span class="btn-text">Directions →</span></div>
+        <div class="loc-row"><div><b>Broomall</b><div class="addr">2928 West Chester Pike, Broomall, PA 19008</div><div class="hrs">Mon–Sun · 6a–11p</div></div><span class="btn-text">Directions →</span></div>
+        <div class="loc-row"><div><b>Brookhaven</b><div class="addr">4501 Edgmont Ave, Brookhaven, PA 19015</div><div class="hrs">Mon–Sun · 6a–11p</div></div><span class="btn-text">Directions →</span></div>
+        <div class="loc-row"><div><b>Havertown</b><div class="addr">820 N Eagle Rd, Havertown, PA 19083</div><div class="hrs">Mon–Sun · 6a–11p</div></div><span class="btn-text">Directions →</span></div>
+        <div class="loc-row"><div><b>Drexel Hill</b><div class="addr">1212 Township Line, Drexel Hill, PA 19026</div><div class="hrs">Mon–Sun · 6a–11p</div></div><span class="btn-text">Directions →</span></div>
+        <div class="loc-row"><div><b>Clifton Heights</b><div class="addr">5340 N Springfield Rd, Clifton Heights, PA 19018</div><div class="hrs">Mon–Sun · 6a–11p</div></div><span class="btn-text">Directions →</span></div>
+        <div class="loc-row"><div><b>Milmont Park</b><div class="addr">301 West MacDade Blvd, Milmont Park, PA 19033</div><div class="hrs">Mon–Sun · 6a–11p</div></div><span class="btn-text">Directions →</span></div>
+      </div>
+    </div>
+  </div></section>
+</section>
+
+<!-- ================= CAREERS ================= -->
+<section class="wf-page" id="careers">
+  <div class="phero"><div class="wrap"><span class="eyebrow on-dark">We're Hiring</span><h1>Join the Crew</h1><p class="lead">Three roles, ten stores, full- and part-time. Bring your energy to a brand Delco has loved since 1968.</p><div class="btn-row"><a href="#careers" class="btn btn-primary">Apply Now</a></div></div></div>
+  <section class="section"><div class="wrap"><div class="sec-head center"><span class="eyebrow">Why Swiss Farms</span><h2>Good People, Good Benefits</h2></div>
+    <div class="grid g-4">
+      <div class="card"><div class="card__b"><h3>Flexible Shifts</h3><p>Schedules that work around your life.</p></div></div>
+      <div class="card"><div class="card__b"><h3>Employee Discount</h3><p>A perk on every visit.</p></div></div>
+      <div class="card"><div class="card__b"><h3>Room to Grow</h3><p>Crew to management pathways.</p></div></div>
+      <div class="card"><div class="card__b"><h3>Referral Bonus</h3><p>Bring a friend, get rewarded.</p></div></div>
+    </div>
+  </div></section>
+  <section class="section alt"><div class="wrap"><div class="sec-head"><span class="eyebrow">Open Roles</span><h2>Three Ways to Join</h2></div>
+    <div class="grid g-3">
+      <div class="card"><div class="card__b"><span class="pill red">Full-Time</span><h3 style="margin-top:12px;">General Manager</h3><p>Lead a store, the team, and the numbers.</p><span class="btn-text">Apply →</span></div></div>
+      <div class="card"><div class="card__b"><span class="pill red">Full-Time</span><h3 style="margin-top:12px;">Assistant Manager</h3><p>Run the floor and coach the crew.</p><span class="btn-text">Apply →</span></div></div>
+      <div class="card"><div class="card__b"><span class="pill">PT &amp; FT</span><h3 style="margin-top:12px;">Store Associate</h3><p>The friendly face at the window.</p><span class="btn-text">Apply →</span></div></div>
+    </div>
+  </div></section>
+  <section class="section"><div class="wrap"><div class="sec-head center"><span class="eyebrow">One Application</span><h2>Start Your Application</h2></div>
+    <div class="formw" style="margin:0 auto;">
+      <label>Full Name</label><div class="fld">Jane Doe</div>
+      <label>Email</label><div class="fld">you@email.com</div>
+      <label>Position</label><div class="fld">Choose a role ▾</div>
+      <label>Store(s)</label><div class="fld">Select locations ▾</div>
+      <label>Upload Resume</label><div class="fld">Choose file…</div>
+      <a class="btn btn-primary" href="#careers" style="width:100%;justify-content:center;">Submit Application</a>
+    </div>
+  </div></section>
+</section>
+
+<!-- ================= FRANCHISE ================= -->
+<section class="wf-page" id="franchise">
+  <div class="phero"><div class="wrap"><span class="eyebrow on-dark">Partnerships</span><h1>Own a Swiss Farms</h1><p class="lead">Bring the drive-thru market to your neighborhood. A proven model, a beloved brand, and a support team behind you.</p><div class="btn-row"><a href="#franchise" class="btn btn-primary">Request Info</a></div></div></div>
+  <section class="section"><div class="wrap"><div class="sec-head center"><span class="eyebrow">Why Franchise</span><h2>A Model That's Stood the Test of Time</h2></div>
+    <div class="grid g-3">
+      <div class="card"><div class="card__b"><h3>Proven Concept</h3><p>50+ years of drive-thru convenience with real brand loyalty.</p></div></div>
+      <div class="card"><div class="card__b"><h3>Efficient Footprint</h3><p>Small-format stores designed for speed and margin.</p></div></div>
+      <div class="card"><div class="card__b"><h3>Full Support</h3><p>Training, supply, and marketing playbooks from day one.</p></div></div>
+    </div>
+    <div class="stats"><div class="stat"><b>Low</b><span>Build-Out Footprint</span></div><div class="stat"><b>Fast</b><span>Ramp to Open</span></div><div class="stat"><b>100%</b><span>Brand Support</span></div></div>
+  </div></section>
+  <section class="section alt"><div class="wrap"><div class="sec-head"><span class="eyebrow">The Path</span><h2>From Inquiry to Grand Opening</h2></div>
+    <div class="grid g-4">
+      <div class="card"><div class="card__b"><b style="font-family:var(--fh);color:var(--red-deep);">01</b><h3 style="margin-top:6px;">Inquire</h3><p>Tell us about you and your market.</p></div></div>
+      <div class="card"><div class="card__b"><b style="font-family:var(--fh);color:var(--red-deep);">02</b><h3 style="margin-top:6px;">Discovery</h3><p>Review the model, costs, and territory.</p></div></div>
+      <div class="card"><div class="card__b"><b style="font-family:var(--fh);color:var(--red-deep);">03</b><h3 style="margin-top:6px;">Build</h3><p>Site selection, design, and training.</p></div></div>
+      <div class="card"><div class="card__b"><b style="font-family:var(--fh);color:var(--red-deep);">04</b><h3 style="margin-top:6px;">Open</h3><p>Grand opening with full brand support.</p></div></div>
+    </div>
+  </div></section>
+  <section class="section"><div class="wrap"><div class="sec-head center"><span class="eyebrow">Get Started</span><h2>Request Franchise Information</h2></div>
+    <div class="formw" style="margin:0 auto;">
+      <label>Name</label><div class="fld">Your name</div>
+      <label>Email &amp; Phone</label><div class="fld">Contact details</div>
+      <label>Target Market / County</label><div class="fld">Where you'd like to open</div>
+      <label>Available Capital</label><div class="fld">Select a range ▾</div>
+      <a class="btn btn-primary" href="#franchise" style="width:100%;justify-content:center;">Send Inquiry</a>
+    </div>
+  </div></section>
+</section>
+
+<!-- ================= NEWS ================= -->
+<section class="wf-page" id="news">
+  <div class="phero"><div class="wrap"><span class="eyebrow on-dark">The Blog</span><h1>News &amp; Updates</h1><p class="lead">Store openings, new menu drops, community happenings, and everything in between.</p></div></div>
+  <section class="section"><div class="wrap">
+    <a class="card" href="#news" style="margin-bottom:34px;"><div class="split" style="gap:0;"><div class="ph" style="aspect-ratio:16/10;border-radius:0;"><span>Image</span></div><div class="card__b" style="padding:38px;"><span class="pill brass">Featured · Openings</span><h3 style="font-size:1.6rem;margin:14px 0 10px;">Swiss Farms Havertown Opens This Fall</h3><p>A first look at our newest drive-thru, plus grand-opening specials you won't want to miss.</p><span class="btn-text">Read Story →</span></div></div></a>
+    <div style="margin-bottom:26px;"><span class="pill red">All</span><span class="pill">Openings</span><span class="pill">Menu</span><span class="pill">Community</span><span class="pill">Behind the Window</span></div>
+    <div class="grid g-3">
+      <a class="card" href="#news"><div class="ph" style="aspect-ratio:16/9"><span>Image</span></div><div class="card__b"><span class="pill">Menu</span><h3 style="margin-top:12px;">Summer Water Ice Flavors</h3><p>Here's the full seasonal lineup, plus flavor-of-the-week.</p></div></a>
+      <a class="card" href="#news"><div class="ph" style="aspect-ratio:16/9"><span>Image</span></div><div class="card__b"><span class="pill">Community</span><h3 style="margin-top:12px;">Sponsoring Delco Little League</h3><p>How we're backing local teams this season.</p></div></a>
+      <a class="card" href="#news"><div class="ph" style="aspect-ratio:16/9"><span>Image</span></div><div class="card__b"><span class="pill">Behind the Window</span><h3 style="margin-top:12px;">A Day in the Drive-Thru</h3><p>Meet the crew that keeps the line moving.</p></div></a>
+      <a class="card" href="#news"><div class="ph" style="aspect-ratio:16/9"><span>Image</span></div><div class="card__b"><span class="pill">Menu</span><h3 style="margin-top:12px;">Fresh Bake Schedule</h3><p>What comes out of the oven, and when.</p></div></a>
+      <a class="card" href="#news"><div class="ph" style="aspect-ratio:16/9"><span>Image</span></div><div class="card__b"><span class="pill">Openings</span><h3 style="margin-top:12px;">Remodels Across Delco</h3><p>Refreshed stores coming to a corner near you.</p></div></a>
+      <a class="card" href="#news"><div class="ph" style="aspect-ratio:16/9"><span>Image</span></div><div class="card__b"><span class="pill">Community</span><h3 style="margin-top:12px;">Holiday Food Drive</h3><p>Join us in giving back this season.</p></div></a>
+    </div>
+  </div></section>
+  <section class="section dark"><div class="wrap" style="text-align:center;max-width:560px;"><span class="cover__eyebrow" style="color:var(--brass-soft);">Stay in the Loop</span><h2 style="font-size:clamp(1.6rem,3vw,2.2rem);font-weight:700;margin:6px 0 12px;">Get the Latest From Swiss Farms</h2><p class="lead" style="margin:0 auto 24px;">Openings, deals, and menu drops — straight to your inbox.</p><div class="searchbar" style="max-width:440px;margin:0 auto;"><div class="fld" style="background:#fff;">you@email.com</div><a class="btn btn-primary" href="#news">Subscribe</a></div></div></section>
+</section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer class="wf-foot">
+  <div class="wrap">
+    <div class="wf-foot__grid">
+      <div>
+        <a class="wf-logo" href="#home" style="color:#fff;"><span class="wf-logo__mark"></span> Swiss Farms</a>
+        <p style="margin-top:16px;max-width:280px;font-size:.9rem;">Delco's iconic drive-thru market — fast, friendly convenience since 1968.</p>
+      </div>
+      <div><h5>Shop</h5><a href="#bakery">Bakery</a><a href="#delco-favorites">Delco Favorites</a><a href="#convenience">Convenience</a><a href="#locator">Store Locator</a></div>
+      <div><h5>Company</h5><a href="#about">About</a><a href="#careers">Careers</a><a href="#franchise">Franchise</a><a href="#news">News</a></div>
+      <div><h5>Visit</h5><a href="#locator">Find a Store</a><a href="#home">Contact</a><a href="#news">Newsletter</a></div>
+    </div>
+    <div class="wf-foot__bar"><span>© 2026 Swiss Farms — Wireframe prototype (placeholder content).</span><span>Accessibility · Privacy · Terms</span></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var header = document.getElementById('wf-header');
+  var pages = Array.prototype.slice.call(document.querySelectorAll('.wf-page'));
+  function syncHeader(){ if(header){ header.classList.toggle('scrolled', window.scrollY > 30); } }
+  function show(id){
+    var target = document.getElementById(id);
+    if(!target || !target.classList.contains('wf-page')){ target = document.getElementById('home'); }
+    pages.forEach(function(p){ p.classList.toggle('is-active', p===target); });
+    document.querySelectorAll('.wf-nav a, .wf-mobile a').forEach(function(a){
+      a.classList.toggle('active', a.getAttribute('href') === '#'+target.id);
+    });
+    document.body.classList.remove('wf-menu-open');
+    window.scrollTo(0,0);
+    syncHeader();
+  }
+  window.addEventListener('hashchange', function(){ show(location.hash.replace('#','') || 'home'); });
+  window.addEventListener('scroll', syncHeader, { passive:true });
+  document.addEventListener('DOMContentLoaded', function(){
+    show(location.hash.replace('#','') || 'home');
+    var b = document.getElementById('wf-burger');
+    if(b){ b.addEventListener('click', function(){ document.body.classList.toggle('wf-menu-open'); }); }
+    // Intro gate: "Drive In!" dismisses the splash and reveals the home page.
+    var cover = document.getElementById('wf-cover');
+    var enter = document.getElementById('wf-enter');
+    function enterSite(){ document.body.classList.remove('pre-enter'); if(cover){ cover.classList.add('gone'); } }
+    if(enter){ enter.addEventListener('click', enterSite); }
+  });
+})();
+</script>
+</body>
+</html>
